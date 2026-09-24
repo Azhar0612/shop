@@ -20,17 +20,26 @@
     
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       
-      <!-- Primary Phone Card -->
+      <!-- Primary & Alternate Phone Card -->
       <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm text-center space-y-3">
         <div class="w-12 h-12 bg-amber-100 rounded-2xl flex items-center justify-center text-2xl mx-auto text-amber-700">📞</div>
-        <h3 class="font-bold text-slate-900 text-base" data-i18n="phone_label">Primary Phone</h3>
-        <a href="tel:{{ settings.phone_primary }}" class="text-lg font-extrabold text-amber-600 hover:underline block">
-          {{ settings.phone_primary }}
-        </a>
-        <p class="text-xs text-slate-500">Alternate: <a href="tel:{{ settings.phone_secondary }}" class="font-semibold text-slate-700 hover:underline">{{ settings.phone_secondary }}</a></p>
-        <a href="tel:{{ settings.phone_primary }}" class="inline-block bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition-all">
-          Call Now
-        </a>
+        <h3 class="font-bold text-slate-900 text-base" data-i18n="phone_label">Contact Phone Numbers</h3>
+        <div class="space-y-1">
+          <a href="tel:+919908014554" class="text-base font-extrabold text-amber-600 hover:underline block">
+            Primary: +91 9908014554
+          </a>
+          <a href="tel:+916302113176" class="text-xs font-bold text-slate-700 hover:underline block">
+            Alternate: +91 6302113176
+          </a>
+        </div>
+        <div class="flex items-center justify-center gap-2 pt-1">
+          <a href="tel:+919908014554" class="inline-block bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-3.5 py-2.5 rounded-xl transition-all">
+            Call Primary
+          </a>
+          <a href="tel:+916302113176" class="inline-block bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold text-xs px-3.5 py-2.5 rounded-xl transition-all">
+            Call Alternate
+          </a>
+        </div>
       </div>
 
       <!-- WhatsApp Card -->

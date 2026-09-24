@@ -39,8 +39,8 @@ for r in routes:
 
 # 2. Contact Phone & Map Links Verification
 status, html, _ = get_page('/')
-assert 'tel:9908014554' in html, "Primary call link missing in homepage"
-assert 'tel:6302113176' in html, "Alternate call link missing in homepage"
+assert ('tel:+919908014554' in html or 'tel:9908014554' in html), "Primary call link missing in homepage"
+assert ('tel:+916302113176' in html or 'tel:6302113176' in html), "Alternate call link missing in homepage"
 assert 'https://maps.app.goo.gl/sj876gsP9mo6CVot5?g_st=ac' in html, "Google maps link missing in homepage"
 print("[PASS] Primary Phone (9908014554), Alternate (6302113176), and Google Maps URL verified on Homepage.")
 

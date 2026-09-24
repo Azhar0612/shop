@@ -79,9 +79,9 @@
 
               <!-- Direct WhatsApp/Call per item -->
               <div class="grid grid-cols-2 gap-2 pt-1">
-                <a href="tel:{{ settings.phone_primary }}" class="bg-slate-100 hover:bg-slate-200 text-slate-800 text-center py-2 rounded-lg text-xs font-bold transition-all">
+                <button onclick="openCallModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-800 text-center py-2 rounded-lg text-xs font-bold transition-all">
                   📞 Call
-                </a>
+                </button>
                 <a href="https://wa.me/91{{ settings.whatsapp_number }}?text=Hello%20Jahangeer%20Chicken%20Center,%20I%20want%20to%20inquire%20about%20{{ product.name }}" target="_blank" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-center py-2 rounded-lg text-xs font-bold transition-all">
                   💬 WhatsApp
                 </a>
