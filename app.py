@@ -1,4 +1,5 @@
 import os
+import tempfile
 import uuid
 import base64
 import urllib.parse
@@ -16,7 +17,15 @@ def create_app():
 
     db.init_app(app)
 
-    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+    # Safely create upload folder with fallback for read-only serverless filesystems
+    try:
+        os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+    except (OSError, PermissionError):
+        app.config['UPLOAD_FOLDER'] = os.path.join(tempfile.gettempdir(), 'uploads')
+        try:
+            os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+        except Exception:
+            pass
 
     # Automatic DB Initialization & Seeder on Startup for Serverless (Vercel)
     with app.app_context():

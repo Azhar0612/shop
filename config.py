@@ -1,4 +1,5 @@
 import os
+import tempfile
 from dotenv import load_dotenv
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -24,6 +25,12 @@ class Config:
             SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'instance', 'jahangeer_chicken.db')
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    UPLOAD_FOLDER = os.path.join(basedir, 'static', 'uploads')
+    
+    # Writable temporary directory for Vercel/serverless; instance/uploads for local development
+    if os.environ.get('VERCEL'):
+        UPLOAD_FOLDER = os.path.join(tempfile.gettempdir(), 'uploads')
+    else:
+        UPLOAD_FOLDER = os.path.join(basedir, 'instance', 'uploads')
+
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16 MB max upload limit
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp', 'svg'}
