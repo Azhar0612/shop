@@ -1,0 +1,188 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Product & Price Management | Jahangeer Chicken Center Admin{% endblock %}
+{% block header_title %}Product & Price Management{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+  
+  <div class="flex items-center justify-between">
+    <p class="text-xs text-slate-600">
+      Manage prices, products, images, and daily availability. Updates take effect immediately on the public website.
+    </p>
+    <button onclick="openModal('addProductModal')" class="bg-amber-500 hover:bg-amber-600 text-slate-900 font-extrabold px-4 py-2.5 rounded-xl text-xs shadow-sm flex items-center gap-1.5 transition-all">
+      <span>+</span> Add New Product
+    </button>
+  </div>
+
+  <!-- Product Table -->
+  <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs border-collapse">
+        <thead>
+          <tr class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
+            <th class="p-4">Image</th>
+            <th class="p-4">Product Name</th>
+            <th class="p-4">Category</th>
+            <th class="p-4">Current Price / KG</th>
+            <th class="p-4">Availability</th>
+            <th class="p-4 text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
+          {% for product in products %}
+            <tr class="hover:bg-slate-50">
+              <td class="p-4">
+                <img src="{{ product.image_url }}" alt="{{ product.name }}" onerror="this.onerror=null; this.src='/static/images/products/placeholder.svg';" class="h-10 w-12 object-contain bg-amber-50 p-1 rounded-lg border border-slate-200">
+              </td>
+              <td class="p-4">
+                <span class="font-bold text-slate-900 text-sm block">{{ product.name }}</span>
+                <span class="text-[11px] text-slate-500 line-clamp-1 max-w-xs">{{ product.description }}</span>
+              </td>
+              <td class="p-4">
+                <span class="bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg text-[11px] font-semibold">{{ product.category }}</span>
+              </td>
+              <td class="p-4">
+                <span class="text-base font-extrabold text-amber-600">₹{{ "%.0f"|format(product.price_per_kg) }}</span>
+                <span class="text-[10px] text-slate-400">/ kg</span>
+              </td>
+              <td class="p-4">
+                <form method="POST" action="{{ url_for('admin_products') }}" class="inline">
+                  <input type="hidden" name="action" value="toggle_availability">
+                  <input type="hidden" name="product_id" value="{{ product.id }}">
+                  <button type="submit" class="px-3 py-1 rounded-full text-[11px] font-bold cursor-pointer transition-all
+                               {% if product.is_available %} bg-emerald-100 text-emerald-800 hover:bg-emerald-200 {% else %} bg-slate-200 text-slate-700 hover:bg-slate-300 {% endif %}">
+                    {% if product.is_available %} In Stock {% else %} Out of Stock {% endif %}
+                  </button>
+                </form>
+              </td>
+              <td class="p-4 text-right space-x-2">
+                <button onclick='editProductModal({{ product.to_dict()|tojson }})' class="bg-slate-900 hover:bg-slate-800 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
+                  Edit Price / Details
+                </button>
+                <form method="POST" action="{{ url_for('admin_products') }}" class="inline" onsubmit="return confirm('Deactivate this product?')">
+                  <input type="hidden" name="action" value="delete">
+                  <input type="hidden" name="product_id" value="{{ product.id }}">
+                  <button type="submit" class="text-red-500 hover:text-red-700 text-xs font-bold p-1">
+                    Delete
+                  </button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal: Add New Product -->
+<div id="addProductModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+  <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+    <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+      <h3 class="font-heading font-extrabold text-lg text-slate-900">Add New Chicken Product</h3>
+      <button onclick="closeModal('addProductModal')" class="text-slate-400 hover:text-slate-600 font-bold text-xl">&times;</button>
+    </div>
+
+    <form method="POST" action="{{ url_for('admin_products') }}" enctype="multipart/form-data" class="space-y-4">
+      <input type="hidden" name="action" value="add">
+      
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Product Name *</label>
+        <input type="text" name="name" required placeholder="e.g. Chicken Lollipops" class="w-full text-sm rounded-xl border-slate-300 bg-slate-50 p-2.5">
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Category</label>
+          <select name="category" class="w-full text-sm rounded-xl border-slate-300 bg-slate-50 p-2.5 font-semibold">
+            <option value="Fresh Chicken">Fresh Chicken</option>
+            <option value="Special Cuts">Special Cuts</option>
+            <option value="Chicken Organs">Chicken Organs</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Price per KG (₹) *</label>
+          <input type="number" step="1" min="1" name="price_per_kg" required placeholder="e.g. 350" class="w-full text-sm rounded-xl border-slate-300 bg-slate-50 p-2.5 font-bold">
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Description</label>
+        <textarea name="description" rows="2" placeholder="Product description..." class="w-full text-sm rounded-xl border-slate-300 bg-slate-50 p-2.5"></textarea>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Upload Product Image (PNG, JPG, WEBP)</label>
+        <input type="file" name="image_file" accept="image/*" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-amber-100 file:text-amber-800 hover:file:bg-amber-200">
+      </div>
+
+      <div class="flex items-center gap-2 pt-2">
+        <input type="checkbox" name="is_available" id="add-available" checked class="rounded text-amber-500">
+        <label for="add-available" class="text-xs font-bold text-slate-700">Mark Available in Stock</label>
+      </div>
+
+      <div class="pt-3 flex justify-end gap-3">
+        <button type="button" onclick="closeModal('addProductModal')" class="px-4 py-2 text-xs font-bold text-slate-500 hover:bg-slate-100 rounded-xl">Cancel</button>
+        <button type="submit" class="bg-amber-500 hover:bg-amber-600 text-slate-900 font-extrabold px-5 py-2.5 rounded-xl text-xs shadow-md">Add Product</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Edit Product / Update Price -->
+<div id="editProductModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+  <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+    <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+      <h3 class="font-heading font-extrabold text-lg text-slate-900">Edit Product & Price</h3>
+      <button onclick="closeModal('editProductModal')" class="text-slate-400 hover:text-slate-600 font-bold text-xl">&times;</button>
+    </div>
+
+    <form method="POST" action="{{ url_for('admin_products') }}" enctype="multipart/form-data" class="space-y-4">
+      <input type="hidden" name="action" value="edit">
+      <input type="hidden" name="product_id" id="edit-product-id">
+
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Product Name *</label>
+        <input type="text" name="name" id="edit-product-name" required class="w-full text-sm rounded-xl border-slate-300 bg-slate-50 p-2.5">
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Category</label>
+          <select name="category" id="edit-product-category" class="w-full text-sm rounded-xl border-slate-300 bg-slate-50 p-2.5 font-semibold">
+            <option value="Fresh Chicken">Fresh Chicken</option>
+            <option value="Special Cuts">Special Cuts</option>
+            <option value="Chicken Organs">Chicken Organs</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Price per KG (₹) *</label>
+          <input type="number" step="1" min="1" name="price_per_kg" id="edit-product-price" required class="w-full text-sm rounded-xl border-slate-300 bg-slate-50 p-2.5 font-extrabold text-amber-600">
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Description</label>
+        <textarea name="description" id="edit-product-description" rows="2" class="w-full text-sm rounded-xl border-slate-300 bg-slate-50 p-2.5"></textarea>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">Change Image (Optional)</label>
+        <input type="file" name="image_file" accept="image/*" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-amber-100 file:text-amber-800">
+      </div>
+
+      <div class="flex items-center gap-2 pt-2">
+        <input type="checkbox" name="is_available" id="edit-product-available" class="rounded text-amber-500">
+        <label for="edit-product-available" class="text-xs font-bold text-slate-700">Mark Available in Stock</label>
+      </div>
+
+      <div class="pt-3 flex justify-end gap-3">
+        <button type="button" onclick="closeModal('editProductModal')" class="px-4 py-2 text-xs font-bold text-slate-500 hover:bg-slate-100 rounded-xl">Cancel</button>
+        <button type="submit" class="bg-amber-500 hover:bg-amber-600 text-slate-900 font-extrabold px-5 py-2.5 rounded-xl text-xs shadow-md">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

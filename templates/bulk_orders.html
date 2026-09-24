@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block title %}Bulk & Company Orders | Jahangeer Chicken Center Secunderabad{% endblock %}
+
+{% block content %}
+<!-- Banner -->
+<section class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white py-12 border-b border-slate-800">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3">
+    <span class="text-xs font-extrabold text-amber-400 uppercase tracking-widest bg-amber-400/10 px-3 py-1 rounded-full border border-amber-400/30">WHOLESALE & COMMERCIAL SUPPLY</span>
+    <h1 class="font-heading font-extrabold text-3xl sm:text-5xl" data-i18n="bulk_title">
+      BULK & COMPANY ORDERS
+    </h1>
+    <p class="text-xs sm:text-sm text-slate-300 max-w-2xl mx-auto" data-i18n="bulk_subtitle">
+      Special wholesale rates & fresh supply for Restaurants, Hotels, Caterers, and Events.
+    </p>
+  </div>
+</section>
+
+<section class="py-16 bg-slate-50">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+    
+    <!-- Target Audience Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 text-center">
+      {% set targets = [
+        ('🍽️', 'Restaurants'),
+        ('🏨', 'Hotels'),
+        ('👨‍🍳', 'Caterers'),
+        ('🎉', 'Events & Weddings'),
+        ('🏢', 'Companies / Canteens'),
+        ('📦', 'Bulk Requirements')
+      ] %}
+      {% for icon, label in targets %}
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+          <span class="text-3xl block">{{ icon }}</span>
+          <h4 class="font-bold text-xs text-slate-800">{{ label }}</h4>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Main Content & Direct Contact Options -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- Left Info Box -->
+      <div class="lg:col-span-6 space-y-6 bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
+        <h2 class="font-heading font-extrabold text-2xl text-slate-900">
+          Daily Bulk Chicken Supply Partner
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed" data-i18n="bulk_desc">
+          We supply fresh chicken daily for bulk requirements. Contact the owner directly for daily bulk pricing, cut specifications, and scheduled pickups.
+        </p>
+
+        <div class="space-y-3 bg-amber-50 p-5 rounded-2xl border border-amber-200 text-xs text-slate-800 font-semibold">
+          <div class="flex items-center gap-2">✔️ Sourced fresh daily from Sneha Fresh Chicken</div>
+          <div class="flex items-center gap-2">✔️ Custom cuts (Biryani cut, leg pieces, skinless, boneless)</div>
+          <div class="flex items-center gap-2">✔️ Hygienic packaging & timed store pickup</div>
+          <div class="flex items-center gap-2">✔️ Transparent wholesale pricing</div>
+        </div>
+
+        <div class="pt-2 flex flex-col sm:flex-row gap-3">
+          <a href="tel:{{ settings.phone_primary }}" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-extrabold px-5 py-3.5 rounded-xl text-xs transition-all shadow-md text-center flex items-center justify-center gap-2">
+            <span>📞</span> <span data-i18n="bulk_call_btn">Call Owner for Bulk</span>
+          </a>
+          <a href="https://wa.me/91{{ settings.whatsapp_number }}?text=Hello%20Jahangeer%20Chicken%20Center,%20I%20want%20to%20inquire%20about%20bulk%20chicken%20supply" target="_blank" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-5 py-3.5 rounded-xl text-xs transition-all shadow-md text-center flex items-center justify-center gap-2">
+            <span>💬</span> <span data-i18n="bulk_whatsapp_btn">WhatsApp for Bulk</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right Bulk Enquiry Form -->
+      <div class="lg:col-span-6 bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+        <h3 class="font-heading font-extrabold text-xl text-slate-900">Send Bulk Order Requirement</h3>
+        <p class="text-xs text-slate-500">Fill in your requirements below and we will contact you immediately.</p>
+
+        <form id="bulk-enquiry-form" onsubmit="submitBulkForm(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Your Name *</label>
+            <input type="text" id="bulk-name" required placeholder="Enter contact name" class="w-full text-sm rounded-xl border-slate-300 focus:border-amber-500 bg-slate-50 p-3">
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Business / Hotel Name</label>
+              <input type="text" id="bulk-business" placeholder="e.g. Royal Restaurant" class="w-full text-sm rounded-xl border-slate-300 focus:border-amber-500 bg-slate-50 p-3">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Phone Number *</label>
+              <input type="tel" id="bulk-phone" required placeholder="10-digit mobile" class="w-full text-sm rounded-xl border-slate-300 focus:border-amber-500 bg-slate-50 p-3">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Category / Type</label>
+            <select id="bulk-type" class="w-full text-sm rounded-xl border-slate-300 focus:border-amber-500 bg-slate-50 p-3 font-semibold">
+              <option value="Restaurant / Hotel">Restaurant / Hotel</option>
+              <option value="Caterer">Caterer</option>
+              <option value="Event / Function">Event / Function</option>
+              <option value="Company Canteen">Company Canteen</option>
+              <option value="Individual Bulk">Individual Bulk Order</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Requirement Details (Quantity, Cut, Date) *</label>
+            <textarea id="bulk-details" rows="3" required placeholder="e.g. Need 50kg Biryani cut skinless chicken on Saturday 8:00 AM..." class="w-full text-sm rounded-xl border-slate-300 focus:border-amber-500 bg-slate-50 p-3"></textarea>
+          </div>
+
+          <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-900 font-extrabold py-3.5 rounded-xl text-sm transition-all shadow-md">
+            Submit Requirement & Open WhatsApp →
+          </button>
+        </form>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+{% block scripts %}
+<script>
+function submitBulkForm(e) {
+  e.preventDefault();
+  const name = document.getElementById('bulk-name').value;
+  const business = document.getElementById('bulk-business').value;
+  const phone = document.getElementById('bulk-phone').value;
+  const type = document.getElementById('bulk-type').value;
+  const details = document.getElementById('bulk-details').value;
+
+  fetch('/api/bulk-enquiry', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      contact_name: name,
+      business_name: business,
+      phone: phone,
+      business_type: type,
+      requirement_details: details
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert("Bulk enquiry submitted! Opening WhatsApp...");
+      document.getElementById('bulk-enquiry-form').reset();
+      if (data.whatsapp_url) {
+        window.open(data.whatsapp_url, '_blank');
+      }
+    } else {
+      alert("Error: " + data.error);
+    }
+  });
+}
+</script>
+{% endblock %}
+
+{% endblock %}

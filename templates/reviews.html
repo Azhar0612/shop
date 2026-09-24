@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}Customer Reviews | Jahangeer Chicken Center{% endblock %}
+
+{% block content %}
+<section class="bg-slate-900 text-white py-12 border-b border-slate-800">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3">
+    <span class="text-xs font-extrabold text-amber-400 uppercase tracking-widest bg-slate-800 px-3 py-1 rounded-full border border-slate-700">VERIFIED FEEDBACK</span>
+    <h1 class="font-heading font-extrabold text-3xl sm:text-5xl" data-i18n="reviews_title">
+      Customer Reviews
+    </h1>
+    <p class="text-xs sm:text-sm text-slate-400 max-w-2xl mx-auto" data-i18n="reviews_subtitle">
+      Real feedback from our valued customers in Secunderabad.
+    </p>
+  </div>
+</section>
+
+<section class="py-16 bg-slate-50 min-h-screen">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+    
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- Left Reviews List -->
+      <div class="lg:col-span-7 space-y-6">
+        <h2 class="font-heading font-extrabold text-2xl text-slate-900">What Our Customers Say</h2>
+
+        {% if reviews %}
+          <div class="space-y-4">
+            {% for rev in reviews %}
+              <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center font-bold text-amber-700 text-xs">
+                      {{ rev.customer_name[0]|upper }}
+                    </div>
+                    <span class="font-bold text-slate-900 text-sm">{{ rev.customer_name }}</span>
+                  </div>
+                  <div class="text-amber-400 text-sm font-bold">
+                    {% for i in range(rev.rating) %}★{% endfor %}
+                  </div>
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed italic">"{{ rev.review_text }}"</p>
+                <span class="text-[10px] text-slate-400 block text-right font-medium">{{ rev.created_at.strftime('%b %d, %Y') }}</span>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <!-- Empty State -->
+          <div class="bg-white p-8 rounded-3xl border border-slate-200 text-center space-y-3 shadow-sm">
+            <div class="w-12 h-12 bg-amber-50 rounded-full flex items-center justify-center text-amber-500 text-2xl mx-auto">⭐</div>
+            <h3 class="font-bold text-slate-800 text-base" data-i18n="no_reviews_yet">No customer reviews approved yet. Be the first to leave a review!</h3>
+            <p class="text-xs text-slate-500 max-w-sm mx-auto">Use the form on the right to share your experience with our shop.</p>
+          </div>
+        {% endif %}
+
+      </div>
+
+      <!-- Right Submit Review Form -->
+      <div class="lg:col-span-5 bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4 sticky top-28">
+        <h3 class="font-heading font-extrabold text-xl text-slate-900" data-i18n="write_review_btn">Write a Review</h3>
+        <p class="text-xs text-slate-500">Your feedback helps us maintain high quality standards.</p>
+
+        <form id="submit-review-form" onsubmit="submitReview(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="name_label">Your Name *</label>
+            <input type="text" id="review-name" required placeholder="Enter your name" class="w-full text-sm rounded-xl border-slate-300 focus:border-amber-500 bg-slate-50 p-3">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Rating *</label>
+            <select id="review-rating" class="w-full text-sm rounded-xl border-slate-300 focus:border-amber-500 bg-slate-50 p-3 font-semibold text-amber-600">
+              <option value="5">★★★★★ (5/5 - Excellent)</option>
+              <option value="4">★★★★☆ (4/5 - Very Good)</option>
+              <option value="3">★★★☆☆ (3/5 - Good)</option>
+              <option value="2">★★☆☆☆ (2/5 - Average)</option>
+              <option value="1">★☆☆☆☆ (1/5 - Poor)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Your Review *</label>
+            <textarea id="review-text" rows="4" required placeholder="Share your experience about chicken freshness, cutting, shop cleanliness, or customer service..." class="w-full text-sm rounded-xl border-slate-300 focus:border-amber-500 bg-slate-50 p-3"></textarea>
+          </div>
+
+          <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-extrabold py-3.5 rounded-xl text-sm transition-all shadow-md" data-i18n="submit_review">
+            Submit Review
+          </button>
+        </form>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+{% block scripts %}
+<script>
+function submitReview(e) {
+  e.preventDefault();
+  const name = document.getElementById('review-name').value;
+  const rating = document.getElementById('review-rating').value;
+  const text = document.getElementById('review-text').value;
+
+  fetch('/api/review', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ customer_name: name, rating: rating, review_text: text })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert(data.message);
+      document.getElementById('submit-review-form').reset();
+    } else {
+      alert("Error: " + data.error);
+    }
+  });
+}
+</script>
+{% endblock %}
+
+{% endblock %}

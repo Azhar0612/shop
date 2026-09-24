@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}About Us | Jahangeer Chicken Center Secunderabad{% endblock %}
+
+{% block content %}
+<section class="bg-slate-900 text-white py-12 border-b border-slate-800">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3">
+    <span class="text-xs font-extrabold text-amber-400 uppercase tracking-widest bg-slate-800 px-3 py-1 rounded-full border border-slate-700">OUR STORY & VALUES</span>
+    <h1 class="font-heading font-extrabold text-3xl sm:text-5xl" data-i18n="nav_about">
+      About Jahangeer Chicken Center
+    </h1>
+    <p class="text-xs sm:text-sm text-slate-400 max-w-2xl mx-auto">
+      Serving fresh, high-quality chicken products to individual households, restaurants, caterers, and businesses across Secunderabad.
+    </p>
+  </div>
+</section>
+
+<section class="py-16 bg-white">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+      <div class="space-y-4">
+        <h2 class="font-heading font-extrabold text-2xl sm:text-3xl text-slate-900">
+          Your Trusted Local Chicken Center
+        </h2>
+        <p class="text-sm text-slate-600 leading-relaxed">
+          Jahangeer Chicken Center is a locally-owned fresh chicken shop located opposite the Army College of Dental Sciences at Rajiv Swagruha ABHIMAAN Project, Secunderabad.
+        </p>
+        <p class="text-sm text-slate-600 leading-relaxed">
+          We specialize in providing farm-fresh chicken cuts tailored to your exact culinary needs. From whole chicken and custom curry cuts to pure boneless chicken and organ cuts (liver, gizzard), we ensure clean, hygienic preparation for every single order.
+        </p>
+      </div>
+
+      <div class="bg-amber-50 p-6 rounded-3xl border border-amber-200 shadow-sm space-y-4">
+        <img src="{{ url_for('static', filename='images/sneha_logo.svg') }}" alt="Sneha Fresh Chicken Logo" class="h-14 w-auto bg-white p-2 rounded-xl border border-amber-300">
+        <h3 class="font-heading font-extrabold text-lg text-slate-900">Our Chicken Supplier Relationship</h3>
+        <p class="text-xs text-slate-700 leading-relaxed">
+          Jahangeer Chicken Center purchases top-quality fresh chicken supplied by <strong>Sneha Fresh Chicken</strong>, one of South India's premier poultry providers known for strict biosecurity and quality standards.
+        </p>
+        <p class="text-[11px] text-slate-500 italic">
+          Note: Jahangeer Chicken Center is an independent retail & wholesale shop purchasing fresh chicken supplied by Sneha.
+        </p>
+      </div>
+    </div>
+
+    <!-- Products Range Overview -->
+    <div class="bg-slate-50 p-8 rounded-3xl border border-slate-200 space-y-6">
+      <h3 class="font-heading font-extrabold text-xl text-slate-900 text-center">Complete Range of Fresh Chicken Cuts</h3>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 text-center">
+        {% set cuts = ['Chicken With Skin', 'Skinless Chicken', 'Chicken Liver', 'Chicken Gizzard', 'Chicken Legs', 'Chicken Thighs', 'Chicken Breast', 'Chicken Wings', 'Boneless Chicken'] %}
+        {% for cut in cuts %}
+          <div class="bg-white p-3 rounded-xl border border-slate-200 font-bold text-xs text-slate-800 shadow-sm">
+            🐓 {{ cut }}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Core Business Pillars -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+      <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm">
+        <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center text-amber-700 font-extrabold text-xl mx-auto mb-3">💧</div>
+        <h4 class="font-bold text-slate-900 text-base mb-1">Clean & Hygienic</h4>
+        <p class="text-xs text-slate-600">Strict sanitation and clean water wash for all poultry cuts.</p>
+      </div>
+
+      <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm">
+        <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center text-amber-700 font-extrabold text-xl mx-auto mb-3">🔪</div>
+        <h4 class="font-bold text-slate-900 text-base mb-1">Precision Cutting</h4>
+        <p class="text-xs text-slate-600">Curry cut, biryani cut, small/large pieces cut on order.</p>
+      </div>
+
+      <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm">
+        <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center text-amber-700 font-extrabold text-xl mx-auto mb-3">🤝</div>
+        <h4 class="font-bold text-slate-900 text-base mb-1">Bulk Supply</h4>
+        <p class="text-xs text-slate-600">Reliable daily supply partner for commercial kitchens & events.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

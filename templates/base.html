@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Jahangeer Chicken Center | Fresh Chicken in Secunderabad{% endblock %}</title>
+  
+  <meta name="description" content="Fresh chicken shop in Secunderabad. Skin chicken, skinless, boneless, breast, legs, liver, gizzard, wings. Sourced from Sneha Fresh Chicken. Retail, wholesale & bulk company orders.">
+  <meta name="keywords" content="Fresh chicken, Secunderabad, Jahangeer Chicken Center, Sneha Fresh Chicken, Boneless chicken, Biryani cut, Wholesale chicken Secunderabad">
+  <meta property="og:title" content="Jahangeer Chicken Center - Fresh Chicken Secunderabad">
+  <meta property="og:description" content="Order fresh chicken ahead for pickup or bulk business orders in Secunderabad. Supplied by Sneha Fresh Chicken.">
+  <meta property="og:image" content="{{ url_for('static', filename='images/logo.svg') }}">
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/logo.svg') }}">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Plus Jakarta Sans & Inter Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              yellow: '#F59E0B',
+              yellowDark: '#D97706',
+              red: '#DC2626',
+              redDark: '#991B1B',
+              navy: '#0F172A',
+              slate: '#1E293B'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            heading: ['Plus Jakarta Sans', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-amber-200">
+
+  <!-- Top Announcement Bar -->
+  <div class="bg-slate-900 text-white py-2 px-4 text-xs font-semibold text-center border-b border-slate-800">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-2 mx-auto sm:mx-0">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span data-i18n="hero_badge">FRESH CHICKEN SUPPLIED BY SNEHA</span>
+        <span class="text-slate-400">|</span>
+        <span data-i18n="no_delivery_notice">Pickup available from shop. No home delivery.</span>
+      </div>
+      <div class="hidden sm:flex items-center gap-4 text-amber-400">
+        <span>🕒 Everyday 7:00 AM - 10:00 PM</span>
+        <a href="tel:{{ settings.phone_primary }}" class="hover:underline font-bold text-white flex items-center gap-1">
+          📞 {{ settings.phone_primary }}
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Header & Navigation -->
+  <header class="bg-white sticky top-0 z-40 shadow-sm border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Logo & Branding -->
+        <a href="{{ url_for('index') }}" class="flex items-center gap-3">
+          <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Jahangeer Chicken Center Logo" class="h-12 w-auto">
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden md:flex items-center gap-6 font-semibold text-sm text-slate-700">
+          <a href="{{ url_for('index') }}" class="hover:text-amber-600 transition-colors" data-i18n="nav_home">Home</a>
+          <a href="{{ url_for('products') }}" class="hover:text-amber-600 transition-colors" data-i18n="nav_products">Products & Prices</a>
+          <a href="{{ url_for('bulk_orders') }}" class="hover:text-amber-600 transition-colors" data-i18n="nav_bulk">Bulk & Company Orders</a>
+          <a href="{{ url_for('about') }}" class="hover:text-amber-600 transition-colors" data-i18n="nav_about">About Us</a>
+          <a href="{{ url_for('reviews') }}" class="hover:text-amber-600 transition-colors" data-i18n="nav_reviews">Reviews</a>
+          <a href="{{ url_for('contact') }}" class="hover:text-amber-600 transition-colors" data-i18n="nav_contact">Contact Us</a>
+        </nav>
+
+        <!-- Right Side Actions & Language Switcher -->
+        <div class="flex items-center gap-3">
+          <!-- Language Switcher -->
+          <div class="flex items-center bg-slate-100 rounded-lg p-1 text-xs">
+            <button onclick="setLanguage('en')" class="lang-btn px-2.5 py-1 rounded-md transition-all font-semibold text-slate-700" data-lang="en">EN</button>
+            <button onclick="setLanguage('te')" class="lang-btn px-2.5 py-1 rounded-md transition-all font-semibold text-slate-700" data-lang="te">తెలుగు</button>
+            <button onclick="setLanguage('hi')" class="lang-btn px-2.5 py-1 rounded-md transition-all font-semibold text-slate-700" data-lang="hi">हिंदी</button>
+          </div>
+
+          <!-- Order Cart Trigger -->
+          <button onclick="openCartDrawer()" class="relative p-2 text-slate-700 hover:text-amber-600 bg-amber-50 hover:bg-amber-100 rounded-xl transition-all border border-amber-200">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+            </svg>
+            <span id="cart-badge-count" class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-extrabold w-5 h-5 rounded-full items-center justify-center hidden shadow-sm">0</span>
+          </button>
+
+          <!-- Desktop Call & WhatsApp Buttons -->
+          <a href="tel:{{ settings.phone_primary }}" class="hidden lg:flex items-center gap-2 bg-slate-900 text-white px-4 py-2.5 rounded-xl font-bold text-xs hover:bg-slate-800 transition-all shadow-sm">
+            <span>📞</span> <span data-i18n="call_now">Call Now</span>
+          </a>
+          <a href="https://wa.me/91{{ settings.whatsapp_number }}" target="_blank" class="hidden lg:flex items-center gap-2 bg-emerald-600 text-white px-4 py-2.5 rounded-xl font-bold text-xs hover:bg-emerald-700 transition-all shadow-sm">
+            <span>💬</span> <span data-i18n="whatsapp_us">WhatsApp Us</span>
+          </a>
+
+          <!-- Mobile Hamburger Toggle -->
+          <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-slate-700 hover:bg-slate-100 rounded-lg">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Mobile Nav Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-slate-200 bg-white px-4 py-4 space-y-3">
+      <a href="{{ url_for('index') }}" class="block px-3 py-2 rounded-lg font-semibold text-slate-700 hover:bg-slate-100" data-i18n="nav_home">Home</a>
+      <a href="{{ url_for('products') }}" class="block px-3 py-2 rounded-lg font-semibold text-slate-700 hover:bg-slate-100" data-i18n="nav_products">Products & Prices</a>
+      <a href="{{ url_for('bulk_orders') }}" class="block px-3 py-2 rounded-lg font-semibold text-slate-700 hover:bg-slate-100" data-i18n="nav_bulk">Bulk & Company Orders</a>
+      <a href="{{ url_for('about') }}" class="block px-3 py-2 rounded-lg font-semibold text-slate-700 hover:bg-slate-100" data-i18n="nav_about">About Us</a>
+      <a href="{{ url_for('reviews') }}" class="block px-3 py-2 rounded-lg font-semibold text-slate-700 hover:bg-slate-100" data-i18n="nav_reviews">Reviews</a>
+      <a href="{{ url_for('contact') }}" class="block px-3 py-2 rounded-lg font-semibold text-slate-700 hover:bg-slate-100" data-i18n="nav_contact">Contact Us</a>
+      <a href="{{ url_for('admin_login') }}" class="block px-3 py-2 rounded-lg font-semibold text-slate-500 hover:bg-slate-100 text-xs" data-i18n="nav_admin">Admin Login</a>
+    </div>
+  </header>
+
+  <!-- Flash Messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="max-w-7xl mx-auto px-4 mt-4 w-full">
+        {% for category, message in messages %}
+          <div class="p-4 mb-3 rounded-xl font-semibold text-sm flex items-center justify-between border
+                      {% if category == 'success' %} bg-emerald-50 text-emerald-800 border-emerald-200
+                      {% elif category == 'danger' %} bg-red-50 text-red-800 border-red-200
+                      {% elif category == 'warning' %} bg-amber-50 text-amber-800 border-amber-200
+                      {% else %} bg-blue-50 text-blue-800 border-blue-200 {% endif %}">
+            <span>{{ message }}</span>
+            <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-slate-600 font-bold ml-4">&times;</button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- Main Content Block -->
+  <main class="flex-grow">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Slide-Over Cart Drawer -->
+  <div id="cart-drawer" class="fixed inset-y-0 right-0 max-w-md w-full bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col border-l border-slate-200">
+    <div class="p-5 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800">
+      <div class="flex items-center gap-2">
+        <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+        </svg>
+        <h3 class="font-heading font-extrabold text-lg" data-i18n="cart_title">Your Pickup Order</h3>
+      </div>
+      <button onclick="closeCartDrawer()" class="text-slate-400 hover:text-white text-2xl font-bold p-1">&times;</button>
+    </div>
+
+    <!-- Cart Body -->
+    <div class="flex-1 overflow-y-auto p-5 space-y-4">
+      <div id="cart-items-list">
+        <!-- Rendered dynamically by cart.js -->
+      </div>
+
+      <!-- Cutting Options & Customer Details -->
+      <div class="border-t border-slate-200 pt-4 space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="cutting_preference">Select Cutting Preference</label>
+          <select id="cart-cutting-preference" class="w-full text-sm rounded-xl border-slate-300 focus:border-amber-500 focus:ring-amber-500 bg-slate-50 p-2.5 font-semibold text-slate-800">
+            <option value="Curry Cut">Curry Cut (Standard)</option>
+            <option value="Small Pieces">Small Pieces</option>
+            <option value="Large Pieces">Large Pieces</option>
+            <option value="Biryani Cut">Biryani Cut</option>
+            <option value="8 Pieces">8 Pieces</option>
+            <option value="12 Pieces">12 Pieces</option>
+            <option value="16 Pieces">16 Pieces</option>
+            <option value="Whole Chicken">Whole Chicken (No Cut)</option>
+            <option value="Custom Cutting">Custom Cutting (Details below)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="special_instructions">Special Instructions</label>
+          <textarea id="cart-special-instructions" rows="2" class="w-full text-sm rounded-xl border-slate-300 focus:border-amber-500 focus:ring-amber-500 bg-slate-50 p-2.5 text-slate-800" placeholder="e.g. Cut into small pieces, prepare for biryani..."></textarea>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 pt-2">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="name_label">Your Name *</label>
+            <input type="text" id="cart-customer-name" required placeholder="Enter your name" class="w-full text-sm rounded-xl border-slate-300 focus:border-amber-500 focus:ring-amber-500 bg-slate-50 p-2.5">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1" data-i18n="phone_input_label">Phone Number *</label>
+            <input type="tel" id="cart-customer-phone" required placeholder="10-digit mobile" class="w-full text-sm rounded-xl border-slate-300 focus:border-amber-500 focus:ring-amber-500 bg-slate-50 p-2.5">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cart Footer Summary -->
+    <div class="p-5 bg-slate-50 border-t border-slate-200 space-y-3">
+      <div class="flex items-center justify-between text-base font-extrabold text-slate-900">
+        <span data-i18n="total_amount">Estimated Total</span>
+        <span id="cart-total-amount" class="text-amber-600 text-xl">₹0.00</span>
+      </div>
+      <button onclick="submitCartOrder()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
+        <span>💬</span> <span data-i18n="btn_send_whatsapp_order">Send Order via WhatsApp</span>
+      </button>
+      <p class="text-[11px] text-slate-500 text-center font-medium">
+        ⚡ Sends pre-filled order directly to shop WhatsApp for quick preparation & pickup.
+      </p>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed bottom-20 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Sticky Mobile Action Bar (Call & WhatsApp) -->
+  <div class="lg:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-200 p-2.5 z-40 shadow-2xl flex items-center justify-between gap-2">
+    <a href="tel:{{ settings.phone_primary }}" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white text-center py-3 rounded-xl font-extrabold text-sm flex items-center justify-center gap-1.5 shadow-md">
+      <span>📞</span> <span data-i18n="call_now">Call Now</span>
+    </a>
+    <a href="https://wa.me/91{{ settings.whatsapp_number }}" target="_blank" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white text-center py-3 rounded-xl font-extrabold text-sm flex items-center justify-center gap-1.5 shadow-md">
+      <span>💬</span> <span data-i18n="whatsapp_us">WhatsApp</span>
+    </a>
+    <button onclick="openCartDrawer()" class="bg-amber-500 hover:bg-amber-600 text-white p-3 rounded-xl font-bold flex items-center justify-center shadow-md">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Global Footer -->
+  <footer class="bg-slate-900 text-slate-300 pt-12 pb-24 lg:pb-12 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+      
+      <!-- Business & Supplier Branding Info -->
+      <div class="space-y-4 md:col-span-1">
+        <div class="flex items-center gap-3">
+          <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Jahangeer Chicken Center Logo" class="h-10 w-auto bg-white p-1 rounded-lg">
+        </div>
+        <p class="text-xs text-slate-400 leading-relaxed" data-i18n="footer_supplier_note">
+          Jahangeer Chicken Center purchases fresh chicken supplied by Sneha. We sell top quality fresh chicken cuts for retail, wholesale, and bulk business requirements.
+        </p>
+        <div class="pt-2">
+          <img src="{{ url_for('static', filename='images/sneha_logo.svg') }}" alt="Sneha Fresh Chicken Logo" class="h-12 w-auto bg-white p-1.5 rounded-lg border border-amber-400">
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="space-y-3">
+        <h4 class="font-heading font-bold text-white text-sm uppercase tracking-wider">Quick Links</h4>
+        <ul class="space-y-2 text-xs">
+          <li><a href="{{ url_for('index') }}" class="hover:text-amber-400 transition-colors" data-i18n="nav_home">Home</a></li>
+          <li><a href="{{ url_for('products') }}" class="hover:text-amber-400 transition-colors" data-i18n="nav_products">Products & Prices</a></li>
+          <li><a href="{{ url_for('bulk_orders') }}" class="hover:text-amber-400 transition-colors" data-i18n="nav_bulk">Bulk & Company Orders</a></li>
+          <li><a href="{{ url_for('about') }}" class="hover:text-amber-400 transition-colors" data-i18n="nav_about">About Us</a></li>
+          <li><a href="{{ url_for('reviews') }}" class="hover:text-amber-400 transition-colors" data-i18n="nav_reviews">Reviews</a></li>
+          <li><a href="{{ url_for('contact') }}" class="hover:text-amber-400 transition-colors" data-i18n="nav_contact">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <!-- Shop Location & Hours -->
+      <div class="space-y-3">
+        <h4 class="font-heading font-bold text-white text-sm uppercase tracking-wider">Shop Details</h4>
+        <p class="text-xs leading-relaxed text-slate-300">
+          <strong>Jahangir Chicken Center</strong><br>
+          Opposite Army College of Dental Sciences,<br>
+          Rajiv Swagruha ABHIMAAN Project,<br>
+          Secunderabad, Telangana - 500087
+        </p>
+        <p class="text-xs text-amber-400 font-semibold">
+          🕒 Everyday: 7:00 AM - 10:00 PM
+        </p>
+      </div>
+
+      <!-- Contact & Socials -->
+      <div class="space-y-3">
+        <h4 class="font-heading font-bold text-white text-sm uppercase tracking-wider">Contact & Directions</h4>
+        <p class="text-xs">
+          <strong>Phone:</strong> <a href="tel:{{ settings.phone_primary }}" class="text-amber-400 hover:underline">{{ settings.phone_primary }}</a><br>
+          <strong>Alt Phone:</strong> <a href="tel:{{ settings.phone_secondary }}" class="text-amber-400 hover:underline">{{ settings.phone_secondary }}</a><br>
+          <strong>WhatsApp:</strong> <a href="https://wa.me/91{{ settings.whatsapp_number }}" target="_blank" class="text-emerald-400 hover:underline">{{ settings.whatsapp_number }}</a>
+        </p>
+        
+        <div class="flex items-center gap-3 pt-2">
+          <a href="{{ settings.maps_url }}" target="_blank" class="bg-amber-500 hover:bg-amber-600 text-slate-900 px-3 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1">
+            <span>📍</span> Directions
+          </a>
+          {% if settings.instagram_url %}
+            <a href="{{ settings.instagram_url }}" target="_blank" class="p-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-amber-400 transition-all" title="Instagram">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-slate-800 text-center text-xs text-slate-500">
+      <p>&copy; {{ current_year }} Jahangeer Chicken Center. <span data-i18n="footer_rights">All rights reserved.</span></p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/i18n.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+  <script>
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      if (menu) menu.classList.toggle('hidden');
+    }
+  </script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

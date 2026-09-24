@@ -1,0 +1,78 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Review Moderation | Jahangeer Chicken Center Admin{% endblock %}
+{% block header_title %}Customer Review Moderation{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+  
+  <p class="text-xs text-slate-600">
+    Review submitted testimonials before publishing them to the public website.
+  </p>
+
+  <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+    {% if reviews %}
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
+              <th class="p-4">Customer Name</th>
+              <th class="p-4">Rating</th>
+              <th class="p-4">Review Text</th>
+              <th class="p-4">Status</th>
+              <th class="p-4">Date</th>
+              <th class="p-4 text-right">Moderation Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
+            {% for rev in reviews %}
+              <tr class="hover:bg-slate-50">
+                <td class="p-4 font-bold text-slate-900">{{ rev.customer_name }}</td>
+                <td class="p-4 text-amber-400 font-bold text-sm">
+                  {% for i in range(rev.rating) %}★{% endfor %}
+                </td>
+                <td class="p-4 text-slate-800 italic max-w-sm">"{{ rev.review_text }}"</td>
+                <td class="p-4">
+                  {% if rev.is_approved %}
+                    <span class="bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full text-[11px] font-bold">Approved</span>
+                  {% else %}
+                    <span class="bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full text-[11px] font-bold">Pending Approval</span>
+                  {% endif %}
+                </td>
+                <td class="p-4 text-slate-400 text-[11px]">{{ rev.created_at.strftime('%Y-%m-%d') }}</td>
+                <td class="p-4 text-right space-x-2">
+                  <form method="POST" action="{{ url_for('admin_review_action', review_id=rev.id) }}" class="inline">
+                    {% if not rev.is_approved %}
+                      <input type="hidden" name="action" value="approve">
+                      <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
+                        Approve & Publish
+                      </button>
+                    {% else %}
+                      <input type="hidden" name="action" value="hide">
+                      <button type="submit" class="bg-amber-500 hover:bg-amber-600 text-slate-900 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
+                        Hide
+                      </button>
+                    {% endif %}
+                  </form>
+                  <form method="POST" action="{{ url_for('admin_review_action', review_id=rev.id) }}" class="inline" onsubmit="return confirm('Delete this review permanently?')">
+                    <input type="hidden" name="action" value="delete">
+                    <button type="submit" class="text-red-600 hover:text-red-800 text-xs font-bold p-1">
+                      Delete
+                    </button>
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="p-12 text-center text-slate-500 space-y-2">
+        <p class="font-bold text-base" data-i18n="no_reviews_yet">No reviews yet</p>
+        <p class="text-xs">Submissions from customers on the website will appear here for approval.</p>
+      </div>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}

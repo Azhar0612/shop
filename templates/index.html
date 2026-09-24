@@ -1,0 +1,340 @@
+{% extends "base.html" %}
+
+{% block title %}Jahangeer Chicken Center | Fresh Chicken in Secunderabad{% endblock %}
+
+{% block content %}
+<!-- HERO SECTION -->
+<section class="relative bg-gradient-to-b from-amber-50 via-white to-slate-50 py-12 lg:py-20 overflow-hidden border-b border-amber-100">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      
+      <!-- Left Hero Content -->
+      <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+        
+        <!-- Sneha Supplier Badge -->
+        <div class="inline-flex items-center gap-3 bg-white px-4 py-2 rounded-2xl shadow-sm border border-amber-300 mx-auto lg:mx-0">
+          <img src="{{ url_for('static', filename='images/sneha_logo.svg') }}" alt="Sneha Fresh Chicken Supplier Logo" class="h-8 w-auto">
+          <div class="text-left border-l border-amber-200 pl-3">
+            <p class="text-[10px] uppercase tracking-wider font-extrabold text-amber-700">CHICKEN SUPPLIER</p>
+            <p class="text-xs font-bold text-slate-800">Fresh Chicken Supplied by Sneha</p>
+          </div>
+        </div>
+
+        <!-- Main Title -->
+        <h1 class="font-heading font-extrabold text-3xl sm:text-5xl lg:text-6xl text-slate-900 leading-tight">
+          JAHANGEER <br class="hidden sm:inline">
+          <span class="text-amber-500 font-extrabold">CHICKEN CENTER</span>
+        </h1>
+
+        <p class="text-lg sm:text-xl font-bold text-amber-700" data-i18n="hero_subtitle">
+          Fresh Chicken • Retail • Wholesale • Company Orders
+        </p>
+
+        <!-- Trust Subtitle & Pickup Clarification -->
+        <div class="bg-white p-4 rounded-2xl border border-amber-200 shadow-sm inline-block max-w-xl">
+          <p class="font-bold text-slate-800 text-sm mb-1" data-i18n="pickup_headline">
+            🛒 Order Ahead & Pick Up From Our Shop
+          </p>
+          <p class="text-xs text-slate-600" data-i18n="pickup_subtext">
+            Prefer to choose in person? Visit us directly opposite Army College of Dental Sciences.
+          </p>
+        </div>
+
+        <!-- Primary Call to Action Buttons -->
+        <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-2">
+          <a href="tel:{{ settings.phone_primary }}" class="bg-slate-900 hover:bg-slate-800 text-white font-extrabold px-6 py-3.5 rounded-xl text-sm transition-all shadow-md flex items-center gap-2">
+            <span>📞</span> <span data-i18n="call_now">Call 9908014554</span>
+          </a>
+          
+          <a href="https://wa.me/91{{ settings.whatsapp_number }}" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-6 py-3.5 rounded-xl text-sm transition-all shadow-md flex items-center gap-2">
+            <span>💬</span> <span data-i18n="whatsapp_us">WhatsApp Us</span>
+          </a>
+
+          <a href="{{ url_for('products') }}" class="bg-amber-500 hover:bg-amber-600 text-slate-900 font-extrabold px-6 py-3.5 rounded-xl text-sm transition-all shadow-md flex items-center gap-2">
+            <span>🍗</span> <span data-i18n="btn_view_products">View Products & Prices</span>
+          </a>
+
+          <a href="{{ settings.maps_url }}" target="_blank" class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold px-5 py-3.5 rounded-xl text-sm transition-all flex items-center gap-2">
+            <span>📍</span> <span data-i18n="btn_get_directions">Get Directions</span>
+          </a>
+        </div>
+
+        <div class="flex items-center justify-center lg:justify-start gap-6 text-xs font-semibold text-slate-600 pt-2">
+          <span>✔️ Open Every Day 7 AM - 10 PM</span>
+          <span>✔️ Custom Cutting</span>
+          <span>✔️ Retail & Wholesale</span>
+        </div>
+
+      </div>
+
+      <!-- Right Shop Front Visual Reference -->
+      <div class="lg:col-span-5">
+        <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-white">
+          <img src="{{ url_for('static', filename='images/shop_front.svg') }}" alt="Jahangeer Chicken Center Storefront Secunderabad" class="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-500">
+          <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-900/90 to-transparent p-5 text-white">
+            <span class="bg-amber-500 text-slate-900 text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full mb-1 inline-block">SECUNDERABAD STORE</span>
+            <h3 class="font-heading font-extrabold text-base">Jahangeer Chicken Center Store</h3>
+            <p class="text-xs text-slate-200">Opposite Army College of Dental Sciences, Secunderabad</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS PREVIEW SECTION -->
+<section class="py-16 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <span class="text-xs font-extrabold text-amber-600 uppercase tracking-widest bg-amber-50 px-3 py-1.5 rounded-full border border-amber-200">FRESH CHICKEN MENU</span>
+      <h2 class="font-heading font-extrabold text-3xl sm:text-4xl text-slate-900 mt-3" data-i18n="products_title">
+        Our Fresh Products & Today's Prices
+      </h2>
+      <p class="text-sm text-slate-600 mt-2" data-i18n="products_subtitle">
+        Stored in database & updated daily for complete transparency.
+      </p>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      {% for product in products %}
+        <div class="bg-slate-50 rounded-2xl overflow-hidden border border-slate-200 hover:shadow-xl transition-all duration-300 flex flex-col group">
+          <div class="relative h-48 bg-amber-100/50 overflow-hidden flex items-center justify-center p-4">
+            <img src="{{ product.image_url }}" alt="{{ product.name }}" loading="lazy" onerror="this.onerror=null; this.src='/static/images/products/placeholder.svg';" class="h-full w-auto object-contain transform group-hover:scale-110 transition-transform duration-300">
+            {% if product.is_available %}
+              <span class="absolute top-3 right-3 bg-emerald-500 text-white text-[11px] font-bold px-2.5 py-1 rounded-full shadow-sm" data-i18n="available">In Stock</span>
+            {% else %}
+              <span class="absolute top-3 right-3 bg-slate-500 text-white text-[11px] font-bold px-2.5 py-1 rounded-full shadow-sm" data-i18n="unavailable">Out of Stock</span>
+            {% endif %}
+          </div>
+
+          <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+            <div>
+              <div class="flex items-start justify-between gap-2">
+                <h3 class="font-heading font-bold text-lg text-slate-900">{{ product.name }}</h3>
+                <span class="text-xs font-bold text-amber-700 bg-amber-100 px-2.5 py-1 rounded-lg">{{ product.category }}</span>
+              </div>
+              <p class="text-xs text-slate-600 mt-2 line-clamp-2">{{ product.description }}</p>
+            </div>
+
+            <div class="pt-4 border-t border-slate-200 flex items-center justify-between">
+              <div>
+                <span class="text-2xl font-extrabold text-slate-900">₹{{ "%.0f"|format(product.price_per_kg) }}</span>
+                <span class="text-xs text-slate-500 font-semibold" data-i18n="price_per_kg">/ kg</span>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <button onclick="addToCart({{ product.id }}, '{{ product.name }}', {{ product.price_per_kg }})" 
+                        class="bg-amber-500 hover:bg-amber-600 text-slate-900 text-xs font-extrabold px-3.5 py-2 rounded-xl transition-all flex items-center gap-1 shadow-sm">
+                  <span>+</span> <span data-i18n="btn_add_to_cart">Add</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-10">
+      <a href="{{ url_for('products') }}" class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-extrabold px-8 py-3.5 rounded-xl text-sm transition-all shadow-md">
+        <span>View All 9 Products & Cutting Options →</span>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- CUTTING OPTIONS SHOWCASE -->
+<section class="py-16 bg-amber-50/60 border-y border-amber-100">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-10">
+      <h2 class="font-heading font-extrabold text-2xl sm:text-3xl text-slate-900" data-i18n="cutting_title">
+        Custom Cutting Options Available
+      </h2>
+      <p class="text-sm text-slate-600 mt-2" data-i18n="cutting_subtitle">
+        Tell us how you want your chicken cut and prepared.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+      {% set options = [
+        ('Curry Cut', 'Standard medium pieces for delicious home curries'),
+        ('Small Pieces', 'Finely chopped pieces for fries & masala dishes'),
+        ('Large Pieces', 'Generous cuts for slow cooking'),
+        ('Biryani Cut', 'Perfectly sized pieces ideal for authentic biryani'),
+        ('8 / 12 / 16 Pieces', 'Specific piece count cuts per chicken'),
+        ('Whole Chicken', 'Whole cleaned chicken without cut'),
+        ('Custom Cutting', 'Tell us your exact instructions!')
+      ] %}
+      {% for title, desc in options %}
+        <div class="bg-white p-4 rounded-xl border border-amber-200 shadow-sm text-center space-y-1 hover:border-amber-400 transition-all">
+          <div class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center mx-auto text-amber-700 font-extrabold text-sm">🔪</div>
+          <h4 class="font-bold text-sm text-slate-900">{{ title }}</h4>
+          <p class="text-[11px] text-slate-500">{{ desc }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE US -->
+<section class="py-16 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <h2 class="font-heading font-extrabold text-3xl text-slate-900" data-i18n="why_title">
+        Why Choose Jahangeer Chicken Center?
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+        <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center text-2xl mb-4">🍗</div>
+        <h3 class="font-bold text-base text-slate-900 mb-1" data-i18n="why_1_title">Fresh Sneha Chicken</h3>
+        <p class="text-xs text-slate-600 leading-relaxed" data-i18n="why_1_desc">Sourced fresh every single day from Sneha Fresh Chicken for top quality.</p>
+      </div>
+
+      <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+        <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center text-2xl mb-4">⚖️</div>
+        <h3 class="font-bold text-base text-slate-900 mb-1" data-i18n="why_2_title">Retail & Wholesale</h3>
+        <p class="text-xs text-slate-600 leading-relaxed" data-i18n="why_2_desc">Whether you need 1kg for home or 100kg for an event, we got you covered.</p>
+      </div>
+
+      <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+        <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center text-2xl mb-4">🔪</div>
+        <h3 class="font-bold text-base text-slate-900 mb-1" data-i18n="why_3_title">Custom Cutting</h3>
+        <p class="text-xs text-slate-600 leading-relaxed" data-i18n="why_3_desc">Curry cut, biryani cut, small/large pieces, leg cuts, or custom cuts.</p>
+      </div>
+
+      <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+        <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center text-2xl mb-4">🕒</div>
+        <h3 class="font-bold text-base text-slate-900 mb-1" data-i18n="why_4_title">Open Every Day</h3>
+        <p class="text-xs text-slate-600 leading-relaxed" data-i18n="why_4_desc">7:00 AM to 10:00 PM every day to serve your culinary needs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BULK ORDERS CTA CARD -->
+<section class="py-12 bg-slate-900 text-white relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-gradient-to-r from-amber-500 to-amber-600 p-8 sm:p-12 rounded-3xl text-slate-900 flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl">
+      <div class="space-y-3 text-center md:text-left">
+        <span class="bg-slate-900 text-amber-400 text-xs font-extrabold uppercase px-3 py-1 rounded-full">WHOLESALE & BULK</span>
+        <h2 class="font-heading font-extrabold text-2xl sm:text-4xl" data-i18n="bulk_title">BULK & COMPANY ORDERS</h2>
+        <p class="text-sm font-semibold max-w-xl text-slate-800" data-i18n="bulk_subtitle">
+          Special wholesale rates & fresh supply for Restaurants, Hotels, Caterers, and Events.
+        </p>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+        <a href="tel:{{ settings.phone_primary }}" class="bg-slate-900 hover:bg-slate-800 text-white font-extrabold px-6 py-3.5 rounded-xl text-xs transition-all shadow-md text-center">
+          📞 <span data-i18n="bulk_call_btn">Call for Bulk Orders</span>
+        </a>
+        <a href="{{ url_for('bulk_orders') }}" class="bg-white hover:bg-slate-100 text-slate-900 font-extrabold px-6 py-3.5 rounded-xl text-xs transition-all shadow-md text-center">
+          Learn More →
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATION SECTION -->
+<section class="py-16 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      
+      <div class="space-y-6">
+        <span class="text-xs font-extrabold text-amber-600 uppercase tracking-widest bg-amber-50 px-3 py-1.5 rounded-full border border-amber-200">STORE LOCATION</span>
+        <h2 class="font-heading font-extrabold text-3xl text-slate-900" data-i18n="location_title">
+          Visit Our Shop in Secunderabad
+        </h2>
+
+        <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
+          <div class="flex items-start gap-3">
+            <span class="text-xl">📍</span>
+            <div>
+              <h4 class="font-bold text-slate-900 text-sm" data-i18n="address_label">Address</h4>
+              <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                <strong>Jahangir Chicken Center</strong><br>
+                Opposite Army College of Dental Sciences,<br>
+                Rajiv Swagruha ABHIMAAN Project,<br>
+                Secunderabad, Telangana - 500087
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3">
+            <span class="text-xl">🕒</span>
+            <div>
+              <h4 class="font-bold text-slate-900 text-sm" data-i18n="hours_label">Opening Hours</h4>
+              <p class="text-xs text-slate-600 mt-1">Every day 7:00 AM - 10:00 PM</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3">
+            <span class="text-xl">📞</span>
+            <div>
+              <h4 class="font-bold text-slate-900 text-sm" data-i18n="phone_label">Phone Numbers</h4>
+              <p class="text-xs text-slate-600 mt-1">
+                Primary: <a href="tel:{{ settings.phone_primary }}" class="text-amber-600 font-bold hover:underline">{{ settings.phone_primary }}</a> | 
+                Alt: <a href="tel:{{ settings.phone_secondary }}" class="text-amber-600 font-bold hover:underline">{{ settings.phone_secondary }}</a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <a href="{{ settings.maps_url }}" target="_blank" class="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-slate-900 font-extrabold px-6 py-3.5 rounded-xl text-sm transition-all shadow-md">
+          <span>📍</span> <span data-i18n="btn_get_directions">Get Directions on Google Maps</span>
+        </a>
+      </div>
+
+      <!-- Location Map Box -->
+      <div class="bg-slate-100 rounded-3xl p-8 border border-slate-200 text-center space-y-4 shadow-sm">
+        <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center text-3xl mx-auto text-amber-600">🗺️</div>
+        <h3 class="font-heading font-extrabold text-xl text-slate-900">Google Maps Location</h3>
+        <p class="text-xs text-slate-600 max-w-md mx-auto">
+          Located directly opposite Army College of Dental Sciences at Rajiv Swagruha ABHIMAAN Project in Secunderabad.
+        </p>
+        <a href="{{ settings.maps_url }}" target="_blank" class="inline-block bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-6 py-3 rounded-xl transition-all shadow-sm">
+          Open Google Maps App ↗
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- APPROVED REVIEWS SECTION -->
+{% if reviews %}
+<section class="py-16 bg-slate-50 border-t border-slate-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-10">
+      <h2 class="font-heading font-extrabold text-3xl text-slate-900" data-i18n="reviews_title">
+        Customer Reviews
+      </h2>
+      <p class="text-sm text-slate-600 mt-2" data-i18n="reviews_subtitle">
+        Real feedback from our valued customers.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {% for rev in reviews %}
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-slate-900 text-sm">{{ rev.customer_name }}</span>
+            <div class="text-amber-400 text-xs font-bold">
+              {% for i in range(rev.rating) %}★{% endfor %}
+            </div>
+          </div>
+          <p class="text-xs text-slate-600 italic">"{{ rev.review_text }}"</p>
+          <span class="text-[10px] text-slate-400 block text-right">{{ rev.created_at.strftime('%b %d, %Y') }}</span>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}

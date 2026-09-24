@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 140" width="100%" height="100%">
+  <defs>
+    <linearGradient id="snehaYellow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFD600" />
+      <stop offset="100%" stop-color="#FFAB00" />
+    </linearGradient>
+    <linearGradient id="snehaRed" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E53935" />
+      <stop offset="100%" stop-color="#C62828" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Outer Shield Badge -->
+  <rect x="5" y="5" width="290" height="130" rx="16" fill="url(#snehaYellow)" stroke="#F57F17" stroke-width="3" />
+  
+  <!-- Inner White Outline Container -->
+  <rect x="15" y="15" width="270" height="110" rx="12" fill="none" stroke="#FFFFFF" stroke-width="3" />
+  
+  <!-- Main Brand Name SNEHA in prominent Red -->
+  <g transform="translate(150, 68)" text-anchor="middle">
+    <text font-family="'Impact', 'Arial Black', sans-serif" font-weight="900" font-size="52" fill="url(#snehaRed)" letter-spacing="3" stroke="#FFFFFF" stroke-width="2">SNEHA</text>
+  </g>
+
+  <!-- Tagline Fresh Chicken Banner -->
+  <g transform="translate(45, 88)">
+    <rect x="0" y="0" width="210" height="26" rx="13" fill="url(#snehaRed)" />
+    <text x="105" y="18" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="800" font-size="14" fill="#FFFFFF" text-anchor="middle" letter-spacing="1.5">FRESH CHICKEN</text>
+  </g>
+
+  <!-- Small Quality Star Badge -->
+  <circle cx="255" cy="35" r="14" fill="#FFFFFF" />
+  <text x="255" y="40" font-family="'Plus Jakarta Sans', sans-serif" font-weight="900" font-size="14" fill="#C62828" text-anchor="middle">100%</text>
+</svg>

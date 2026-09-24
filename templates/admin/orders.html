@@ -1,0 +1,101 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Order Management | Jahangeer Chicken Center Admin{% endblock %}
+{% block header_title %}Order Management{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+  
+  <!-- Status Filter Tabs -->
+  <div class="flex items-center gap-2 flex-wrap bg-white p-2 rounded-2xl border border-slate-200 shadow-sm">
+    {% set statuses = ['All', 'New', 'Accepted', 'Preparing', 'Ready for Pickup', 'Completed', 'Cancelled'] %}
+    {% for st in statuses %}
+      <a href="{{ url_for('admin_orders', status=st) }}" 
+         class="px-4 py-2 rounded-xl text-xs font-bold transition-all
+                {% if selected_status == st %} bg-slate-900 text-white shadow-md {% else %} text-slate-600 hover:bg-slate-100 {% endif %}">
+        {{ st }}
+      </a>
+    {% endfor %}
+  </div>
+
+  <!-- Orders Table -->
+  <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+    {% if orders %}
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
+              <th class="p-4">Order # / Date</th>
+              <th class="p-4">Customer</th>
+              <th class="p-4">Items Ordered</th>
+              <th class="p-4">Cutting & Instructions</th>
+              <th class="p-4">Total Amount</th>
+              <th class="p-4">Current Status</th>
+              <th class="p-4 text-right">Update Status</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
+            {% for order in orders %}
+              <tr class="hover:bg-slate-50">
+                <td class="p-4">
+                  <span class="font-bold text-slate-900 text-sm block">{{ order.order_number }}</span>
+                  <span class="text-[11px] text-slate-400">{{ order.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+                </td>
+                <td class="p-4">
+                  <span class="font-bold text-slate-900 block">{{ order.customer_name }}</span>
+                  <a href="tel:{{ order.customer_phone }}" class="text-amber-600 font-bold hover:underline">📞 {{ order.customer_phone }}</a>
+                </td>
+                <td class="p-4">
+                  <ul class="space-y-1 text-slate-800">
+                    {% for item in order.items %}
+                      <li>• <strong>{{ item.product_name }}</strong>: {{ item.quantity_kg }} kg @ ₹{{ "%.0f"|format(item.price_per_kg) }}</li>
+                    {% endfor %}
+                  </ul>
+                </td>
+                <td class="p-4 max-w-xs">
+                  <span class="bg-amber-50 text-amber-800 px-2 py-0.5 rounded border border-amber-200 text-[11px] font-bold block w-fit mb-1">
+                    ✂️ {{ order.cutting_preference }}
+                  </span>
+                  {% if order.special_instructions %}
+                    <p class="text-[11px] text-slate-500 italic">"{{ order.special_instructions }}"</p>
+                  {% endif %}
+                </td>
+                <td class="p-4">
+                  <span class="text-base font-extrabold text-slate-900">₹{{ "%.0f"|format(order.total_amount) }}</span>
+                  <span class="text-[10px] text-slate-400 block">Pickup</span>
+                </td>
+                <td class="p-4">
+                  <span class="px-3 py-1.5 rounded-full text-[11px] font-extrabold inline-block shadow-sm
+                               {% if order.status == 'Completed' %} bg-emerald-100 text-emerald-800
+                               {% elif order.status == 'New' %} bg-blue-100 text-blue-800 animate-pulse
+                               {% elif order.status == 'Preparing' %} bg-amber-100 text-amber-800
+                               {% elif order.status == 'Ready for Pickup' %} bg-purple-100 text-purple-800
+                               {% elif order.status == 'Cancelled' %} bg-red-100 text-red-800
+                               {% else %} bg-slate-100 text-slate-800 {% endif %}">
+                    {{ order.status }}
+                  </span>
+                </td>
+                <td class="p-4 text-right">
+                  <select onchange="updateOrderStatus({{ order.id }}, this.value)" class="text-xs font-bold rounded-xl border-slate-300 bg-slate-50 p-2 text-slate-800 focus:border-amber-500">
+                    {% for status_opt in ['New', 'Accepted', 'Preparing', 'Ready for Pickup', 'Completed', 'Cancelled'] %}
+                      <option value="{{ status_opt }}" {% if order.status == status_opt %}selected{% endif %}>
+                        Set {{ status_opt }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="p-12 text-center text-slate-500 space-y-2">
+        <p class="font-bold text-base">No orders found</p>
+        <p class="text-xs">No orders matching "{{ selected_status }}".</p>
+      </div>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}

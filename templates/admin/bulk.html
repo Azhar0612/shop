@@ -1,0 +1,76 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Bulk Enquiries | Jahangeer Chicken Center Admin{% endblock %}
+{% block header_title %}Bulk & Commercial Enquiries{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+  
+  <p class="text-xs text-slate-600">
+    Commercial bulk inquiries submitted by restaurants, hotels, caterers, and function organizers.
+  </p>
+
+  <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+    {% if enquiries %}
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
+              <th class="p-4">Contact / Business</th>
+              <th class="p-4">Phone</th>
+              <th class="p-4">Business Type</th>
+              <th class="p-4">Requirement Details</th>
+              <th class="p-4">Status</th>
+              <th class="p-4">Date</th>
+              <th class="p-4 text-right">Action</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
+            {% for enq in enquiries %}
+              <tr class="hover:bg-slate-50">
+                <td class="p-4">
+                  <span class="font-bold text-slate-900 text-sm block">{{ enq.contact_name }}</span>
+                  <span class="text-[11px] text-amber-700 font-semibold">{{ enq.business_name or 'Individual Bulk' }}</span>
+                </td>
+                <td class="p-4">
+                  <a href="tel:{{ enq.phone }}" class="text-amber-600 font-bold hover:underline">📞 {{ enq.phone }}</a>
+                  <a href="https://wa.me/91{{ enq.phone }}" target="_blank" class="text-emerald-600 font-bold hover:underline block text-[11px]">💬 WhatsApp</a>
+                </td>
+                <td class="p-4">
+                  <span class="bg-slate-100 text-slate-800 px-2.5 py-1 rounded-lg text-[11px] font-semibold">{{ enq.business_type }}</span>
+                </td>
+                <td class="p-4 max-w-sm">
+                  <p class="text-slate-800 text-xs leading-relaxed font-semibold">{{ enq.requirement_details }}</p>
+                </td>
+                <td class="p-4">
+                  <span class="px-2.5 py-1 rounded-full text-[11px] font-extrabold
+                               {% if enq.status == 'Closed' %} bg-slate-200 text-slate-700
+                               {% elif enq.status == 'Contacted' %} bg-blue-100 text-blue-800
+                               {% elif enq.status == 'In Discussion' %} bg-amber-100 text-amber-800
+                               {% else %} bg-red-100 text-red-800 animate-pulse {% endif %}">
+                    {{ enq.status }}
+                  </span>
+                </td>
+                <td class="p-4 text-slate-400 text-[11px]">{{ enq.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td class="p-4 text-right">
+                  <select onchange="updateBulkStatus({{ enq.id }}, this.value)" class="text-xs font-bold rounded-xl border-slate-300 bg-slate-50 p-2 text-slate-800">
+                    {% for st in ['Pending', 'Contacted', 'In Discussion', 'Closed'] %}
+                      <option value="{{ st }}" {% if enq.status == st %}selected{% endif %}>Set {{ st }}</option>
+                    {% endfor %}
+                  </select>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="p-12 text-center text-slate-500 space-y-2">
+        <p class="font-bold text-base">No bulk enquiries yet</p>
+        <p class="text-xs">Submissions from the Bulk & Company Orders page will appear here.</p>
+      </div>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 350" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad_chicken_breast" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F8FAFC" />
+      <stop offset="100%" stop-color="#F1F5F9" />
+    </linearGradient>
+  </defs>
+
+  <!-- Card Outer Background -->
+  <rect width="500" height="350" rx="20" fill="url(#bgGrad_chicken_breast)" />
+
+  <!-- Inner Decorative Circle Badge -->
+  <circle cx="250" cy="140" r="100" fill="#FFFFFF" opacity="0.85" stroke="#475569" stroke-width="3" />
+
+  <!-- Graphic Illustration -->
+  
+        <g transform="translate(160, 75)">
+          <path d="M 20 70 C 20 20, 100 10, 150 50 C 170 90, 110 120, 40 100 Z" fill="#64748B" stroke="#FFFFFF" stroke-width="3" />
+          <path d="M 50 60 C 50 30, 120 20, 160 60 C 170 90, 120 110, 60 90 Z" fill="#475569" opacity="0.8" />
+        </g>
+        
+
+  <!-- Supplier Fresh Badge Tag -->
+  <g transform="translate(160, 20)">
+    <rect x="0" y="0" width="180" height="26" rx="13" fill="#475569" />
+    <text x="90" y="17" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="800" font-size="11" fill="#FFFFFF" text-anchor="middle" letter-spacing="1">SNEHA FRESH CHICKEN</text>
+  </g>
+
+  <!-- Text Title & Subtitle Banner -->
+  <g transform="translate(30, 260)">
+    <rect width="440" height="65" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+    <text x="220" y="30" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="900" font-size="22" fill="#0F172A" text-anchor="middle">Chicken Breast</text>
+    <text x="220" y="50" font-family="'Inter', sans-serif" font-weight="600" font-size="13" fill="#64748B" text-anchor="middle">Lean Protein Fillet Cuts</text>
+  </g>
+</svg>

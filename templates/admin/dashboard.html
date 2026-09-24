@@ -1,0 +1,147 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Dashboard | Jahangeer Chicken Center Admin{% endblock %}
+{% block header_title %}Business Dashboard Overview{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+  
+  <!-- KPI Metrics Grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+    
+    <!-- Today Revenue -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+      <div class="flex items-center justify-between text-slate-500">
+        <span class="text-xs font-bold uppercase tracking-wider">Today's Revenue</span>
+        <span class="p-2 bg-amber-100 text-amber-700 rounded-xl text-lg">💰</span>
+      </div>
+      <div class="text-3xl font-extrabold text-slate-900">₹{{ "%.0f"|format(kpis.today_revenue) }}</div>
+      <p class="text-[11px] text-slate-500">Recorded revenue for today</p>
+    </div>
+
+    <!-- Today Orders -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+      <div class="flex items-center justify-between text-slate-500">
+        <span class="text-xs font-bold uppercase tracking-wider">Today's Orders</span>
+        <span class="p-2 bg-blue-100 text-blue-700 rounded-xl text-lg">🛒</span>
+      </div>
+      <div class="text-3xl font-extrabold text-slate-900">{{ kpis.today_orders }}</div>
+      <p class="text-[11px] text-slate-500">Website pickup requests today</p>
+    </div>
+
+    <!-- Pending Orders -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+      <div class="flex items-center justify-between text-slate-500">
+        <span class="text-xs font-bold uppercase tracking-wider">Pending Orders</span>
+        <span class="p-2 bg-amber-100 text-amber-700 rounded-xl text-lg">⏳</span>
+      </div>
+      <div class="text-3xl font-extrabold text-amber-600">{{ kpis.pending_orders }}</div>
+      <p class="text-[11px] text-slate-500">Orders being prepared/pickup</p>
+    </div>
+
+    <!-- Total Chicken Sold -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+      <div class="flex items-center justify-between text-slate-500">
+        <span class="text-xs font-bold uppercase tracking-wider">Total Chicken Sold</span>
+        <span class="p-2 bg-emerald-100 text-emerald-700 rounded-xl text-lg">🍗</span>
+      </div>
+      <div class="text-3xl font-extrabold text-slate-900">{{ "%.1f"|format(kpis.total_chicken_sold_kg) }} <span class="text-sm font-bold text-slate-500">KG</span></div>
+      <p class="text-[11px] text-slate-500">Volume sold via orders</p>
+    </div>
+
+  </div>
+
+  <!-- Secondary Revenue KPIs -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+    <div class="bg-slate-900 text-white p-6 rounded-2xl shadow-sm space-y-1">
+      <span class="text-xs font-bold text-slate-400 uppercase">Weekly Revenue</span>
+      <div class="text-2xl font-extrabold text-amber-400">₹{{ "%.0f"|format(kpis.weekly_revenue) }}</div>
+    </div>
+    <div class="bg-slate-900 text-white p-6 rounded-2xl shadow-sm space-y-1">
+      <span class="text-xs font-bold text-slate-400 uppercase">Monthly Revenue</span>
+      <div class="text-2xl font-extrabold text-amber-400">₹{{ "%.0f"|format(kpis.monthly_revenue) }}</div>
+    </div>
+    <div class="bg-slate-900 text-white p-6 rounded-2xl shadow-sm space-y-1">
+      <span class="text-xs font-bold text-slate-400 uppercase">Total All-Time Revenue</span>
+      <div class="text-2xl font-extrabold text-emerald-400">₹{{ "%.0f"|format(kpis.total_revenue) }}</div>
+    </div>
+  </div>
+
+  <!-- Charts Section -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+    
+    <!-- Revenue Trend Chart -->
+    <div class="lg:col-span-8 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="font-heading font-bold text-base text-slate-900">7-Day Revenue Trend (₹)</h3>
+        <span class="text-xs text-slate-500 font-medium">Daily totals</span>
+      </div>
+      <div class="h-72 relative">
+        <canvas id="revenueTrendChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Product Sales Chart -->
+    <div class="lg:col-span-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="font-heading font-bold text-base text-slate-900">Product Sales Volume</h3>
+        <span class="text-xs text-slate-500 font-medium">By Cut Category</span>
+      </div>
+      <div class="h-72 relative">
+        <canvas id="productSalesChart"></canvas>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Recent Orders Table -->
+  <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden space-y-4 p-6">
+    <div class="flex items-center justify-between">
+      <h3 class="font-heading font-bold text-base text-slate-900">Recent Customer Pickup Orders</h3>
+      <a href="{{ url_for('admin_orders') }}" class="text-xs font-bold text-amber-600 hover:underline">View All Orders →</a>
+    </div>
+
+    {% if recent_orders %}
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
+              <th class="p-3">Order #</th>
+              <th class="p-3">Customer</th>
+              <th class="p-3">Phone</th>
+              <th class="p-3">Cutting Preference</th>
+              <th class="p-3">Total Amount</th>
+              <th class="p-3">Status</th>
+              <th class="p-3">Date/Time</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
+            {% for order in recent_orders %}
+              <tr>
+                <td class="p-3 font-bold text-slate-900">{{ order.order_number }}</td>
+                <td class="p-3">{{ order.customer_name }}</td>
+                <td class="p-3"><a href="tel:{{ order.customer_phone }}" class="text-amber-600 hover:underline">{{ order.customer_phone }}</a></td>
+                <td class="p-3"><span class="bg-amber-50 text-amber-800 px-2 py-0.5 rounded border border-amber-200 text-[11px]">{{ order.cutting_preference }}</span></td>
+                <td class="p-3 font-extrabold text-slate-900">₹{{ "%.0f"|format(order.total_amount) }}</td>
+                <td class="p-3">
+                  <span class="px-2.5 py-1 rounded-full text-[11px] font-bold
+                               {% if order.status == 'Completed' %} bg-emerald-100 text-emerald-800
+                               {% elif order.status == 'New' %} bg-blue-100 text-blue-800
+                               {% elif order.status == 'Preparing' %} bg-amber-100 text-amber-800
+                               {% else %} bg-slate-100 text-slate-800 {% endif %}">
+                    {{ order.status }}
+                  </span>
+                </td>
+                <td class="p-3 text-slate-400 text-[11px]">{{ order.created_at.strftime('%m-%d %H:%M') }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p class="text-xs text-slate-500 py-4 text-center">No orders recorded yet.</p>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}

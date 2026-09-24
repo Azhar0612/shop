@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#E0F2FE"/>
+      <stop offset="100%" stop-color="#BAE6FD"/>
+    </linearGradient>
+    <linearGradient id="boardYellow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FFD600"/>
+      <stop offset="100%" stop-color="#FFC107"/>
+    </linearGradient>
+    <linearGradient id="boardRed" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#DC2626"/>
+      <stop offset="100%" stop-color="#991B1B"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Sky background -->
+  <rect width="800" height="500" fill="url(#sky)"/>
+  
+  <!-- Building Structure -->
+  <rect x="50" y="100" width="700" height="360" fill="#F1F5F9" stroke="#94A3B8" stroke-width="4"/>
+  <rect x="40" y="80" width="720" height="25" fill="#334155"/>
+  
+  <!-- Main Shop Board -->
+  <rect x="70" y="120" width="660" height="110" rx="8" fill="url(#boardYellow)" stroke="#D97706" stroke-width="4"/>
+  <rect x="80" y="130" width="150" height="90" rx="8" fill="url(#boardRed)"/>
+  <text x="155" y="170" font-family="'Impact', Arial" font-size="28" fill="#FFFFFF" text-anchor="middle">SNEHA</text>
+  <text x="155" y="195" font-family="'Arial', sans-serif" font-weight="bold" font-size="14" fill="#FFD600" text-anchor="middle">FRESH CHICKEN</text>
+  
+  <text x="460" y="165" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="900" font-size="30" fill="#0F172A" text-anchor="middle">JAHANGEER CHICKEN CENTER</text>
+  <text x="460" y="195" font-family="'Inter', sans-serif" font-weight="700" font-size="16" fill="#B45309" text-anchor="middle">RETAIL • WHOLESALE • COMPANY BULK ORDERS</text>
+  <text x="460" y="218" font-family="'Inter', sans-serif" font-weight="600" font-size="13" fill="#1E293B" text-anchor="middle">PH: 9908014554 | 6302113176</text>
+  
+  <!-- Counter Window / Shutters / Display -->
+  <rect x="100" y="250" width="600" height="210" fill="#E2E8F0" stroke="#64748B" stroke-width="3"/>
+  
+  <!-- Glass Display Counter -->
+  <rect x="130" y="270" width="340" height="150" fill="#F8FAFC" stroke="#94A3B8" stroke-width="3"/>
+  <rect x="140" y="280" width="320" height="40" fill="#FEF3C7" rx="4"/>
+  <text x="300" y="305" font-family="'Inter', sans-serif" font-weight="700" font-size="14" fill="#92400E" text-anchor="middle">Hygienic Cold Display Counter</text>
+  
+  <rect x="140" y="335" width="95" height="70" rx="4" fill="#F1F5F9" stroke="#CBD5E1"/>
+  <text x="187" y="375" font-family="'Inter', sans-serif" font-weight="600" font-size="12" fill="#334155" text-anchor="middle">Curry Cut</text>
+  
+  <rect x="252" y="335" width="95" height="70" rx="4" fill="#F1F5F9" stroke="#CBD5E1"/>
+  <text x="300" y="375" font-family="'Inter', sans-serif" font-weight="600" font-size="12" fill="#334155" text-anchor="middle">Skinless</text>
+
+  <rect x="365" y="335" width="95" height="70" rx="4" fill="#F1F5F9" stroke="#CBD5E1"/>
+  <text x="412" y="375" font-family="'Inter', sans-serif" font-weight="600" font-size="12" fill="#334155" text-anchor="middle">Boneless</text>
+  
+  <!-- Entrance & Order Desk -->
+  <rect x="500" y="270" width="170" height="190" fill="#CBD5E1" stroke="#475569" stroke-width="2"/>
+  <rect x="520" y="320" width="130" height="140" fill="#0F172A" opacity="0.85"/>
+  <text x="585" y="380" font-family="'Inter', sans-serif" font-weight="700" font-size="14" fill="#FFFFFF" text-anchor="middle">Billing &amp;</text>
+  <text x="585" y="400" font-family="'Inter', sans-serif" font-weight="700" font-size="14" fill="#F59E0B" text-anchor="middle">Pickup Desk</text>
+  
+  <!-- Ground -->
+  <rect x="0" y="460" width="800" height="40" fill="#64748B"/>
+  <text x="400" y="485" font-family="'Inter', sans-serif" font-weight="600" font-size="13" fill="#F8FAFC" text-anchor="middle">Secunderabad Store Location • Opp. Army College of Dental Sciences</text>
+</svg>
