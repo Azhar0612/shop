@@ -1,13 +1,29 @@
 import os
 import tempfile
+from datetime import timedelta
 from dotenv import load_dotenv
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env'))
 
 class Config:
-    # Require SECRET_KEY from environment or generate random bytes for session safety
-    SECRET_KEY = os.environ.get('SECRET_KEY') or os.urandom(24).hex()
+    # SECRET_KEY resolution: In production (Vercel / FLASK_ENV=production), SECRET_KEY MUST be provided via environment.
+    _env_secret = os.environ.get('SECRET_KEY')
+    _is_prod = bool(os.environ.get('VERCEL') or os.environ.get('FLASK_ENV') == 'production')
+
+    if _is_prod:
+        if not _env_secret:
+            raise RuntimeError("CRITICAL SECURITY ERROR: SECRET_KEY environment variable is required in production / Vercel deployment.")
+        SECRET_KEY = _env_secret
+    else:
+        SECRET_KEY = _env_secret or 'dev-only-local-secret-key-do-not-use-in-production'
+    
+    # Session Cookie Security Configuration for Production HTTPS & Serverless (Vercel)
+    SESSION_COOKIE_NAME = 'jcc_admin_session'
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SAMESITE = 'Lax'
+    SESSION_COOKIE_SECURE = True if _is_prod else False
+    PERMANENT_SESSION_LIFETIME = timedelta(days=7)
     
     # Database URL handling
     raw_db_uri = os.environ.get('DATABASE_URL') or os.environ.get('DATABASE_URI') or os.environ.get('POSTGRES_URL')

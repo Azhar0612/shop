@@ -296,6 +296,7 @@ def create_app():
 
             admin = Admin.query.filter_by(username=username).first()
             if admin and admin.check_password(password):
+                session.permanent = True
                 session['admin_logged_in'] = True
                 session['admin_username'] = admin.username
                 flash('Successfully logged into Admin Dashboard.', 'success')
