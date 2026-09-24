@@ -3,6 +3,9 @@ import urllib.request
 import urllib.parse
 import json
 import http.cookiejar
+from dotenv import load_dotenv
+
+load_dotenv()
 
 base_url = 'http://127.0.0.1:5000'
 

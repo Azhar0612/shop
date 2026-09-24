@@ -8,13 +8,18 @@ def seed_database():
     with app.app_context():
         db.create_all()
 
-        # Seed Admin user if not exists
-        if not Admin.query.filter_by(username='admin').first():
+        # Seed or sync Admin user from environment settings
+        admin = Admin.query.filter_by(username='admin').first()
+        if not admin:
             admin = Admin(username='admin')
-            initial_pass = os.environ.get('ADMIN_PASSWORD') or 'dev-admin-pass'
-            admin.set_password(initial_pass)
             db.session.add(admin)
-            print("Created initial admin user from environment settings.")
+
+        env_admin_pass = os.environ.get('ADMIN_PASSWORD')
+        if env_admin_pass:
+            admin.set_password(env_admin_pass)
+        elif not admin.password_hash:
+            admin.set_password('dev-admin-pass')
+        print("Admin user synchronization complete.")
 
         # Initial products list as defined in specification
         initial_products = [
